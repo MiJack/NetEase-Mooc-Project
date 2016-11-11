@@ -1,17 +1,21 @@
 package com.mijack.course.controller;
 
+import com.mijack.course.bean.BuyProduct;
 import com.mijack.course.bean.Product;
 import com.mijack.course.bean.User;
 import com.mijack.course.dao.ProductDao;
+import com.mijack.course.dao.TrxDao;
 import com.mijack.course.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -21,6 +25,8 @@ import java.util.List;
 public class HTMLController {
     @Autowired
     ProductDao productDao;
+    @Autowired
+    TrxDao trxDao;
 
     /**
      * @param data
@@ -94,6 +100,14 @@ public class HTMLController {
         if (productDao.update(data)) {
             modelAndView.addObject(data);
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = {"/account.html","/account"})
+    public ModelAndView account(HttpSession session, @SessionAttribute("user") User user) {
+        ModelAndView modelAndView = Utils.generateModelAndView("account", session);
+        List<BuyProduct> buyProducts = trxDao.getBuyList(user.getId());
+        modelAndView.addObject("buyList", buyProducts);
         return modelAndView;
     }
 }

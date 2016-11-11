@@ -27,11 +27,15 @@ public interface ProductDao {
 
     @Update("update  content set title=#{title } ,icon=#{image},abstract=#{summary},text=#{detail},price=#{price} where id = #{id}")
     boolean update(Product data);
+
     @Results(value = {
             @Result(column = "abstract", property = "summary", javaType = String.class, jdbcType = JdbcType.BLOB),
             @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB),
             @Result(column = "icon", property = "image"),
     })
-    @Select("SELECT content.*  , (SELECT count(*)    FROM trx    WHERE content.id = trx.id) AS trxCount  FROM content")
+    @Select("SELECT content.*  , (SELECT count(*) FROM trx WHERE content.id = trx.id) AS trxCount  FROM content")
     List<Product> listProducts();
+
+    @Delete("DELETE FROM content WHERE id = #{id}")
+    boolean delete(int id);
 }
