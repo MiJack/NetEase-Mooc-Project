@@ -80,4 +80,19 @@ public class Product {
     public void setTrxCount(int trxCount) {
         this.trxCount = trxCount;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", summary='" + summary + '\'' +
+                ", image='" + image + '\'' +
+                ", title='" + title + '\'' +
+                ", detail='" + detail + '\'' +
+                ", price=" + price +
+                ", isBuy=" + isBuy +
+                ", isSell=" + isSell +
+                ", trxCount=" + trxCount +
+                '}';
+    }
 }

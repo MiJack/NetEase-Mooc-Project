@@ -97,6 +97,7 @@ public class HTMLController {
     @RequestMapping(value = {"/editSubmit"}, method = RequestMethod.POST)
     public ModelAndView editSubmit(Product data, @RequestParam("id") int id, HttpSession session) {
         ModelAndView modelAndView = Utils.generateModelAndView("editSubmit", session);
+        System.out.println(data);
         if (productDao.update(data)) {
             modelAndView.addObject(data);
         }
