@@ -22,7 +22,7 @@ public interface ProductDao {
             @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB),
             @Result(column = "icon", property = "image"),
     })
-    @Select("SELECT id,abstract,icon,price,text,title FROM content WHERE id = #{id} ")
+    @Select("SELECT id,abstract,icon,price,text,title ,(SELECT count(*) from trx WHERE trx.contentId=#{id} ) as trxCount,(SELECT trx.price FROM  trx WHERE contentId=#{id} ) as buyPrice FROM content WHERE id = #{id} ")
     Product get(int id);
 
     @Update("update  content set title=#{title } ,icon=#{image},abstract=#{summary},text=#{detail},price=#{price} where id = #{id}")
@@ -32,8 +32,9 @@ public interface ProductDao {
             @Result(column = "abstract", property = "summary", javaType = String.class, jdbcType = JdbcType.BLOB),
             @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB),
             @Result(column = "icon", property = "image"),
+            @Result(column = "trxCount", property = "trxCount")
     })
-    @Select("SELECT content.*  , (SELECT count(*) FROM trx WHERE content.id = trx.id) AS trxCount  FROM content")
+    @Select("SELECT content.*,(SELECT count(*) FROM trx WHERE content.id = trx.contentId) AS trxCount FROM content")
     List<Product> listProducts();
 
     @Delete("DELETE FROM content WHERE id = #{id}")

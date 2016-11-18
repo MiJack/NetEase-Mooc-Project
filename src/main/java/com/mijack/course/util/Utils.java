@@ -8,6 +8,7 @@ import java.util.Enumeration;
 /**
  * Created by Mr.Yuan on 2016/11/7.
  */
+@Deprecated
 public class Utils {
     /**
      * 转化成aop或者其他方法

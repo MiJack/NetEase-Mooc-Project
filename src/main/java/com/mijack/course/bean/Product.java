@@ -14,6 +14,9 @@ public class Product {
     private boolean isBuy;
     private boolean isSell;
     private int trxCount;
+    private float buyPrice;
+    private long buyTime;
+
     public Product() {
     }
 
@@ -69,6 +72,14 @@ public class Product {
         isBuy = buy;
     }
 
+    public boolean getIsBuy() {
+        return isBuy;
+    }
+
+    public boolean getIsSell() {
+        return isSell;
+    }
+
     public void setSell(boolean sell) {
         isSell = sell;
     }
@@ -81,18 +92,19 @@ public class Product {
         this.trxCount = trxCount;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", summary='" + summary + '\'' +
-                ", image='" + image + '\'' +
-                ", title='" + title + '\'' +
-                ", detail='" + detail + '\'' +
-                ", price=" + price +
-                ", isBuy=" + isBuy +
-                ", isSell=" + isSell +
-                ", trxCount=" + trxCount +
-                '}';
+    public float getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(float buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public long getBuyTime() {
+        return buyTime;
+    }
+
+    public void setBuyTime(long buyTime) {
+        this.buyTime = buyTime;
     }
 }
