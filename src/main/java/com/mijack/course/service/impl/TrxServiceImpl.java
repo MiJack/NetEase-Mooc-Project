@@ -6,6 +6,8 @@ import com.mijack.course.dao.TrxDao;
 import com.mijack.course.service.TrxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class TrxServiceImpl implements TrxService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean buy(String userId, int productId, long currentTimeMillis) {
         Product product = productDao.get(productId);
         boolean buy = false;
