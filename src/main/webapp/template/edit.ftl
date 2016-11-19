@@ -42,7 +42,8 @@
             <div class="fmitem">
                 <label class="fmlab">价格：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="price" value="${product.price}"/>元
+                    <#-- 添加?c，使得输入框里的数字不含逗号-->
+                    <input class="u-ipt price" name="price" value="${product.price?c}"/>元
                 </div>
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">
