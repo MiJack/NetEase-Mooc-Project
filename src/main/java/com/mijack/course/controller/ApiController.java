@@ -1,6 +1,5 @@
 package com.mijack.course.controller;
 
-import com.mijack.course.bean.Product;
 import com.mijack.course.bean.User;
 import com.mijack.course.service.ProductService;
 import com.mijack.course.service.TrxService;
@@ -57,8 +56,7 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
-    public ModelAndView buy(@RequestParam("id") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public ModelAndView buy(@RequestParam("id") int id,@SessionAttribute("user") User user) {
         // FIXME: 2016/11/11 添加事务处理
         boolean buy = trxService.buy(user.getId(), id, System.currentTimeMillis());
         ModelAndView modelAndView = new ModelAndView();

@@ -49,7 +49,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product get(int id, String userName) {
-        // TODO: 2016/11/19  detail 字段存在乱码问题
         Product p = productDao.get(id);
         //当用户登录时设置buy和sell
         if (userName != null) {

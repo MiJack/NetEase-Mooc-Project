@@ -19,7 +19,7 @@ public interface ProductDao {
 
     @Results(value = {
             @Result(column = "abstract", property = "summary", javaType = String.class, jdbcType = JdbcType.BLOB),
-            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB),
+            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB ,typeHandler = BlobStringTypeHandler.class),
             @Result(column = "icon", property = "image"),
     })
     @Select("SELECT id,abstract,icon,price,text,title ,(SELECT count(*) from trx WHERE trx.contentId=#{id} ) as trxCount,(SELECT trx.price FROM  trx WHERE contentId=#{id} ) as buyPrice FROM content WHERE id = #{id} ")
