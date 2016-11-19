@@ -1,14 +1,19 @@
 package com.mijack.course.bean;
 
+import org.hibernate.validator.constraints.Length;
+
 /**
  * Created by Mr.Yuan on 2016/11/7.
  */
 public class Product {
 
     private int id;
+    @Length(min = 2,max = 80)
+    private String title;
+    @Length(min = 2,max=140)
     private String summary;
     private String image;
-    private String title;
+    @Length(min = 2,max = 1000)
     private String detail;
     private float price;
     private boolean isBuy;

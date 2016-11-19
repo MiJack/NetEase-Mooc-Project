@@ -6,6 +6,9 @@ import com.mijack.course.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,9 +80,9 @@ public class ProductController {
      */
     @RequestMapping(value = {"/public"})
     public String publicSome(
-            @SessionAttribute(name = "user", required = false) User user,
-            @SessionAttribute(name = "username", required = false) String userName,
-            @SessionAttribute(name = "usertype", required = false) String usertype) {
+            @SessionAttribute(name = "user") User user,
+            @SessionAttribute(name = "username") String userName,
+            @SessionAttribute(name = "usertype") String usertype) {
         return "public";
     }
 
@@ -96,11 +99,10 @@ public class ProductController {
      */
     @RequestMapping(value = {"/edit"})
     public String edit(ModelMap modelMap,
-                       @SessionAttribute(name = "user", required = false) User user,
-                       @SessionAttribute(name = "username", required = false) String userName,
-                       @SessionAttribute(name = "usertype", required = false) String usertype,
+                       @SessionAttribute(name = "user") User user,
+                       @SessionAttribute(name = "username") String userName,
+                       @SessionAttribute(name = "usertype") String usertype,
                        @RequestParam("id") int id) {
-        // TODO: 2016/11/19   添加判断，卖出的商品无法编辑
         Product p = productService.get(id, userName);
         modelMap.addAttribute(p);
         return "edit";
@@ -116,24 +118,31 @@ public class ProductController {
      */
     @RequestMapping(value = "/publicSubmit", method = RequestMethod.POST)
     public String publicSubmit(ModelMap modelMap,
-                               @SessionAttribute(name = "user", required = false) User user,
-                               @SessionAttribute(name = "username", required = false) String userName,
-                               @SessionAttribute(name = "usertype", required = false) String usertype,
-                               Product data) {
-        // TODO: 2016/11/19  添加data的检验
-        productService.submitProduct(data);
-        modelMap.addAttribute("product", data);
+                               @SessionAttribute(name = "user") User user,
+                               @SessionAttribute(name = "username") String userName,
+                               @SessionAttribute(name = "usertype") String usertype,
+                               @Validated Product data, Errors errors) {
+        // TODO: 2016/11/20  添加判断，内容是否已经1000
+        if (!errors.hasErrors()) {
+            productService.submitProduct(data);
+            modelMap.addAttribute("product", data);
+        } else {
+            modelMap.addAttribute("product", null);
+        }
         return "publicSubmit";
     }
 
     @RequestMapping(value = {"/editSubmit"}, method = RequestMethod.POST)
     public String editSubmit(ModelMap modelMap,
-                             @SessionAttribute(name = "user", required = false) User user,
-                             @SessionAttribute(name = "username", required = false) String userName,
-                             @SessionAttribute(name = "usertype", required = false) String usertype,
-                             Product data, @RequestParam("id") int id) {
-        if (productService.updateProduct(data)) {
-            modelMap.addAttribute(data);
+                             @SessionAttribute(name = "user") User user,
+                             @SessionAttribute(name = "username") String userName,
+                             @SessionAttribute(name = "usertype") String usertype,
+                             @Validated Product data, Errors errors, @RequestParam("id") int id) {
+        // TODO: 2016/11/20  添加判断，内容是否已经1000
+        if (!errors.hasErrors() && productService.updateProduct(data)) {
+            modelMap.addAttribute("product", data);
+        } else {
+            modelMap.addAttribute("product", null);
         }
         return "editSubmit";
     }

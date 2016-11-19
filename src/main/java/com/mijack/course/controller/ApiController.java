@@ -46,7 +46,7 @@ public class ApiController {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("type", String.valueOf(user.getUsertype()));
+            session.setAttribute("usertype", String.valueOf(user.getUsertype()));
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("code", (login ? 200 : 100));
@@ -56,7 +56,8 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
-    public ModelAndView buy(@RequestParam("id") int id,@SessionAttribute("user") User user) {
+    public ModelAndView buy(@RequestParam("id") int id,
+                            @SessionAttribute("user") User user) {
         // FIXME: 2016/11/11 添加事务处理
         boolean buy = trxService.buy(user.getId(), id, System.currentTimeMillis());
         ModelAndView modelAndView = new ModelAndView();
@@ -68,11 +69,10 @@ public class ApiController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("id") int id) {
-        // FIXME: 2016/11/11 考虑删除后对原有交易的影响
         boolean result = productService.delete(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("code", (result ? 200 : 100));
-        modelAndView.addObject("message", (result ? "购买成功" : "购买异常"));
+        modelAndView.addObject("message", (result ? "删除成功" : "删除失败"));
         modelAndView.addObject("result", result);
         return modelAndView;
     }

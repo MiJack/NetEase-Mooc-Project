@@ -1,10 +1,10 @@
 package com.mijack.course.aop;
 
-import com.mijack.course.bean.User;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Mr.Yuan
@@ -12,18 +12,20 @@ import org.springframework.web.context.request.NativeWebRequest;
  */
 @ControllerAdvice
 public class WebAppControllerAdvice {
-
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public String processUnauthenticatedException(NativeWebRequest request, Exception e) {
-//        System.out.println("===========应用到所有@RequestMapping注解的方法，在其抛出UnauthenticatedException异常时执行");
-//        return "viewName"; //返回一个逻辑视图名
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(Exception.class)
+    public String process4XX() {
+        return "404";
+    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
-    public String processUnauthenticatedException(Exception e) {
-        e.printStackTrace();
-        return "404"; //返回一个逻辑视图名
+    public String processInternalServerError(ModelMap modelMap, Exception e) {
+        if (e != null) {
+            modelMap.addAttribute("msg", e.getMessage());
+        } else {
+            modelMap.addAttribute("msg", "服务端发生500异常,管理员正在紧急修复中！");
+        }
+        return "error"; //返回一个逻辑视图名
     }
 }
