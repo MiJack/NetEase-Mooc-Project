@@ -41,4 +41,7 @@ public interface ProductDao {
 
     @Delete("DELETE FROM content WHERE id = #{id} AND NOT exists(SELECT * FROM trx WHERE contentId = #{id})")
     boolean delete(int id);
+
+    @Select("select count(id) from content")
+    int getCount();
 }

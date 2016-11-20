@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
     public Product get(int id, String userName) {
         Product p = productDao.get(id);
         //当用户登录时设置buy和sell
-        if (userName != null) {
+        if (p != null && userName != null) {
             p.setBuy(p.getTrxCount() > 0);
             p.setSell(p.getTrxCount() > 0);
         }
@@ -112,5 +112,16 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean delete(int id) {
         return productDao.delete(id);
+    }
+
+
+    /**
+     * 获取商品的总数
+     *
+     * @return 商品的总数
+     */
+    @Override
+    public int getCount() {
+        return productDao.getCount();
     }
 }

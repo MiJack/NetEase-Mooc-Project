@@ -58,4 +58,11 @@ public interface ProductService {
      * @return 是否成功
      */
     boolean delete(int id);
+
+    /**
+     * 获取商品的总数
+     *
+     * @return 商品的总数
+     */
+    int getCount();
 }

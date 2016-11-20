@@ -84,6 +84,9 @@ public class ProductController {
             @SessionAttribute(name = "user") User user,
             @SessionAttribute(name = "username") String userName,
             @SessionAttribute(name = "usertype") String usertype) {
+        if ("0".equals(usertype)) {
+            throw new IllegalStateException("买家无法访问");
+        }
         return "public";
     }
 
@@ -104,6 +107,9 @@ public class ProductController {
                        @SessionAttribute(name = "username") String userName,
                        @SessionAttribute(name = "usertype") String usertype,
                        @RequestParam("id") int id) {
+        if ("0".equals(usertype)) {
+            throw new IllegalStateException("买家无法访问");
+        }
         Product p = productService.get(id, userName);
         modelMap.addAttribute(p);
         return "edit";
@@ -123,8 +129,11 @@ public class ProductController {
                                @SessionAttribute(name = "username") String userName,
                                @SessionAttribute(name = "usertype") String usertype,
                                @Validated Product data, Errors errors) {
-        // TODO: 2016/11/20  添加判断，内容是否已经1000
-        if (!errors.hasErrors()) {
+        if ("0".equals(usertype)) {
+            throw new IllegalStateException("买家无法访问");
+        }
+        int count = productService.getCount();
+        if (!errors.hasErrors() && count < 1000) {
             productService.submitProduct(data);
             modelMap.addAttribute("product", data);
         } else {
@@ -139,8 +148,12 @@ public class ProductController {
                              @SessionAttribute(name = "username") String userName,
                              @SessionAttribute(name = "usertype") String usertype,
                              @Validated Product data, Errors errors, @RequestParam("id") int id) {
-        // TODO: 2016/11/20  添加判断，内容是否已经1000
-        if (!errors.hasErrors() && productService.updateProduct(data)) {
+        if ("0".equals(usertype)) {
+            throw new IllegalStateException("买家无法访问");
+        }
+        int count = productService.getCount();
+        if (!errors.hasErrors() && count < 1000
+                && productService.updateProduct(data)) {
             modelMap.addAttribute("product", data);
         } else {
             modelMap.addAttribute("product", null);

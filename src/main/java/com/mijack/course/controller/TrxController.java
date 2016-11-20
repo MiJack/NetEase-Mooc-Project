@@ -36,6 +36,9 @@ public class TrxController {
                           @SessionAttribute(name = "user", required = false) User user,
                           @SessionAttribute(name = "username", required = false) String userName,
                           @SessionAttribute(name = "usertype", required = false) String usertype) {
+        if ("1".equals(usertype)) {
+            throw new IllegalStateException("卖家无法访问");
+        }
         List<Product> buyProducts = trxService.getBuyList(user.getId());
         modelMap.addAttribute("buyList", buyProducts);
         return "account";

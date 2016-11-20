@@ -10,6 +10,9 @@ public class User {
     private String id;
     private String username;
     private String nickName;
+    /**0为买家
+     * 1为卖家
+     */
     private int usertype;
     private String password;
 

@@ -68,7 +68,6 @@ public class ApiController {
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
     public ModelAndView buy(@RequestParam("id") int id,
                             @SessionAttribute("user") User user) {
-        // FIXME: 2016/11/11 添加事务处理
         boolean buy = trxService.buy(user.getId(), id, System.currentTimeMillis());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("code", (buy ? 200 : 100));
