@@ -8,6 +8,8 @@ import java.nio.charset.Charset;
 import java.sql.*;
 
 /**
+ * 实现Blob和String间的转化
+ *
  * @author Mr.Yuan
  * @since 2016/11/19.
  */
@@ -38,7 +40,7 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
         Blob blob = rs.getBlob(columnIndex);
         String returnValue = null;
         if (null != blob) {
-            returnValue = new String(blob.getBytes(1, (int) blob.length()),UTF8);
+            returnValue = new String(blob.getBytes(1, (int) blob.length()), UTF8);
         }
         return returnValue;
     }
@@ -49,7 +51,7 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
         Blob blob = cs.getBlob(columnIndex);
         String returnValue = null;
         if (null != blob) {
-            returnValue = new String(blob.getBytes(1, (int) blob.length()),UTF8);
+            returnValue = new String(blob.getBytes(1, (int) blob.length()), UTF8);
         }
         return returnValue;
     }

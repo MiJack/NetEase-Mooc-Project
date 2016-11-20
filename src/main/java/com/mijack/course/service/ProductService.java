@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProductService {
 
     /**
+     * 展示商品列表
+     *
      * @param type     type type为1时，筛选用户未购买的商品
      * @param userName
      * @return
@@ -37,17 +39,23 @@ public interface ProductService {
     /**
      * 提交发布商品
      *
-     * @param data
+     * @param data 提交的商品信息
      */
     void submitProduct(Product data);
 
     /**
-     * 更新prouct的数据
+     * 更新商品的数据
      *
-     * @param data
-     * @return
+     * @param data 提交的商品信息
+     * @return 是否成功
      */
     boolean updateProduct(Product data);
 
+    /**
+     * 删除商品信息
+     *
+     * @param id 商品id
+     * @return 是否成功
+     */
     boolean delete(int id);
 }

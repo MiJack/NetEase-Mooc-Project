@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import java.util.List;
 
 /**
+ * 和交易相关的请求处理
+ *
  * @author Mr.Yuan
- * @since 2016/11/19.
+ * @since 2016/11/20.
  */
 @Controller
 public class TrxController {
@@ -22,6 +24,7 @@ public class TrxController {
 
     /**
      * 访问account页面
+     *
      * @param modelMap
      * @param user
      * @param userName
@@ -30,9 +33,9 @@ public class TrxController {
      */
     @RequestMapping(value = {"/account.html", "/account"})
     public String account(ModelMap modelMap,
-                                @SessionAttribute(name = "user", required = false) User user,
-                                @SessionAttribute(name = "username", required = false) String userName,
-                                @SessionAttribute(name = "usertype", required = false) String usertype) {
+                          @SessionAttribute(name = "user", required = false) User user,
+                          @SessionAttribute(name = "username", required = false) String userName,
+                          @SessionAttribute(name = "usertype", required = false) String usertype) {
         List<Product> buyProducts = trxService.getBuyList(user.getId());
         modelMap.addAttribute("buyList", buyProducts);
         return "account";

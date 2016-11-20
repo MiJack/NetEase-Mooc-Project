@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by admin on 2016/11/11.
+ * 和交易相关的DAO操作
+ * @author Mr.Yuan
+ * @since 2016/11/20.
  */
 @Repository
 public interface TrxDao {

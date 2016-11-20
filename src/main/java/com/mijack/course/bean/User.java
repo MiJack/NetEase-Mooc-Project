@@ -1,7 +1,10 @@
 package com.mijack.course.bean;
 
 /**
- * Created by admin on 2016/11/4.
+ * 用户的JavaBean
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/4.
  */
 public class User {
     private String id;

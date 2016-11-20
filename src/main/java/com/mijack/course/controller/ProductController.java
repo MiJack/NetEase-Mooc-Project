@@ -6,7 +6,6 @@ import com.mijack.course.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +65,9 @@ public class ProductController {
                        @SessionAttribute(name = "usertype", required = false) String usertype,
                        @RequestParam("id") int id) {
         Product p = productService.get(id, userName);
-        modelMap.addAttribute(p);
+        if (p != null) {
+            modelMap.addAttribute(p);
+        }
         return "show";
     }
 

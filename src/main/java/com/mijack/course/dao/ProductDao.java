@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by Mr.Yuan on 2016/11/7.
+ * 和商品相关的DAO操作
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/7.
  */
 @Repository
 public interface ProductDao {
@@ -19,8 +22,8 @@ public interface ProductDao {
 
     @Results(value = {
             @Result(column = "abstract", property = "summary"),
-            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB ,typeHandler = BlobStringTypeHandler.class),
-            @Result(column = "icon", property = "image", javaType = String.class, jdbcType = JdbcType.BLOB ,typeHandler = BlobStringTypeHandler.class),
+            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB, typeHandler = BlobStringTypeHandler.class),
+            @Result(column = "icon", property = "image", javaType = String.class, jdbcType = JdbcType.BLOB, typeHandler = BlobStringTypeHandler.class),
     })
     @Select("SELECT id,abstract,icon,price,text,title ,(SELECT count(*) from trx WHERE trx.contentId=#{id} ) as trxCount,(SELECT trx.price FROM  trx WHERE contentId=#{id} ) as buyPrice FROM content WHERE id = #{id} ")
     Product get(int id);
@@ -30,8 +33,8 @@ public interface ProductDao {
 
     @Results(value = {
             @Result(column = "abstract", property = "summary"),
-            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB ,typeHandler = BlobStringTypeHandler.class),
-            @Result(column = "icon", property = "image", javaType = String.class, jdbcType = JdbcType.BLOB ,typeHandler = BlobStringTypeHandler.class)
+            @Result(column = "text", property = "detail", javaType = String.class, jdbcType = JdbcType.BLOB, typeHandler = BlobStringTypeHandler.class),
+            @Result(column = "icon", property = "image", javaType = String.class, jdbcType = JdbcType.BLOB, typeHandler = BlobStringTypeHandler.class)
     })
     @Select("SELECT content.*,(SELECT count(*) FROM trx WHERE content.id = trx.contentId) AS trxCount FROM content")
     List<Product> listProducts();

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 用户相关服务的实现
  * @author Mr.Yuan
  * @since 2016/11/19.
  */
@@ -18,9 +19,10 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     /**
-     * @param username
-     * @param password
-     * @return
+     * 登录接口
+     * @param username 用户名
+     * @param password 密码
+     * @return 对应的用户对象
      */
     @Override
     public User login(String username, String password) {

@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by admin on 2016/11/4.
+ * Api相关的Controller实现
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/4.
  */
 @Controller
 @RequestMapping("/api")
@@ -55,6 +58,13 @@ public class ApiController {
         return modelAndView;
     }
 
+    /**
+     * 购买商品
+     *
+     * @param id   商品的id
+     * @param user 用户的信息
+     * @return
+     */
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
     public ModelAndView buy(@RequestParam("id") int id,
                             @SessionAttribute("user") User user) {
@@ -67,6 +77,12 @@ public class ApiController {
         return modelAndView;
     }
 
+    /**
+     * 删除商品
+     *
+     * @param id 商品的id
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("id") int id) {
         boolean result = productService.delete(id);
