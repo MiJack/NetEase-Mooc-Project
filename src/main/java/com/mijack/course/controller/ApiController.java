@@ -1,10 +1,9 @@
 package com.mijack.course.controller;
 
-import com.mijack.course.bean.Product;
 import com.mijack.course.bean.User;
-import com.mijack.course.dao.ProductDao;
-import com.mijack.course.dao.TrxDao;
-import com.mijack.course.dao.UserDao;
+import com.mijack.course.service.ProductService;
+import com.mijack.course.service.TrxService;
+import com.mijack.course.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,20 +11,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
- * Created by admin on 2016/11/4.
+ * Api相关的Controller实现
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/4.
  */
 @Controller
 @RequestMapping("/api")
 public class ApiController {
     @Autowired
-    UserDao userDao;
+    private UserService userService;
     @Autowired
-    TrxDao trxDao;
+    private TrxService trxService;
     @Autowired
-    ProductDao productDao;
+    private ProductService productService;
 
     /**
      * 1. 默认权限为需要登录
@@ -42,45 +43,51 @@ public class ApiController {
     public ModelAndView login(HttpServletRequest request,
                               @RequestParam("userName") String username,
                               @RequestParam("password") String password) {
-        List<User> users = userDao.login(username, password);
-        int count = users.size();
-        if (count == 1) {
-            User user = users.get(0);
+        User user = userService.login(username, password);
+        boolean login = user != null;
+        if (login) {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("type", String.valueOf(user.getUsertype()));
+            session.setAttribute("usertype", String.valueOf(user.getUsertype()));
         }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("code", (count == 1 ? 200 : 100));
-        modelAndView.addObject("message", (count == 1 ? "登陆成功" : "登陆异常"));
-        modelAndView.addObject("result", (count == 1));
+        modelAndView.addObject("code", (login ? 200 : 100));
+        modelAndView.addObject("message", (login ? "登陆成功" : "登陆异常"));
+        modelAndView.addObject("result", login);
         return modelAndView;
     }
 
+    /**
+     * 购买商品
+     *
+     * @param id   商品的id
+     * @param user 用户的信息
+     * @return
+     */
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
-    public ModelAndView buy(@RequestParam("id") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        // FIXME: 2016/11/11 添加事务处理
-        Product product = productDao.get(id);
-        int buy = 0;
-        if (!trxDao.isSell(product)) {
-            buy = trxDao.buy(user.getId(), product, System.currentTimeMillis());
-        }
+    public ModelAndView buy(@RequestParam("id") int id,
+                            @SessionAttribute("user") User user) {
+        boolean buy = trxService.buy(user.getId(), id, System.currentTimeMillis());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("code", (buy == 1 ? 200 : 100));
-        modelAndView.addObject("message", (buy == 1 ? "购买成功" : "购买异常"));
-        modelAndView.addObject("result", (buy == 1));
+        modelAndView.addObject("code", (buy ? 200 : 100));
+        modelAndView.addObject("message", (buy ? "购买成功" : "购买异常"));
+        modelAndView.addObject("result", buy);
         return modelAndView;
     }
 
+    /**
+     * 删除商品
+     *
+     * @param id 商品的id
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("id") int id) {
-        // FIXME: 2016/11/11 考虑删除后对原有交易的影响
-        boolean result = productDao.delete(id);
+        boolean result = productService.delete(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("code", (result ? 200 : 100));
-        modelAndView.addObject("message", (result ? "购买成功" : "购买异常"));
+        modelAndView.addObject("message", (result ? "删除成功" : "删除失败"));
         modelAndView.addObject("result", result);
         return modelAndView;
     }

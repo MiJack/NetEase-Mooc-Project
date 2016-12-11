@@ -1,19 +1,30 @@
 package com.mijack.course.bean;
 
+import org.hibernate.validator.constraints.Length;
+
 /**
- * Created by Mr.Yuan on 2016/11/7.
+ * 商品的JavaBean
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/7.
  */
 public class Product {
 
     private int id;
+    @Length(min = 2, max = 80)
+    private String title;
+    @Length(min = 2, max = 140)
     private String summary;
     private String image;
-    private String title;
+    @Length(min = 2, max = 1000)
     private String detail;
     private float price;
     private boolean isBuy;
     private boolean isSell;
     private int trxCount;
+    private float buyPrice;
+    private long buyTime;
+
     public Product() {
     }
 
@@ -69,6 +80,14 @@ public class Product {
         isBuy = buy;
     }
 
+    public boolean getIsBuy() {
+        return isBuy;
+    }
+
+    public boolean getIsSell() {
+        return isSell;
+    }
+
     public void setSell(boolean sell) {
         isSell = sell;
     }
@@ -79,5 +98,21 @@ public class Product {
 
     public void setTrxCount(int trxCount) {
         this.trxCount = trxCount;
+    }
+
+    public float getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(float buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public long getBuyTime() {
+        return buyTime;
+    }
+
+    public void setBuyTime(long buyTime) {
+        this.buyTime = buyTime;
     }
 }

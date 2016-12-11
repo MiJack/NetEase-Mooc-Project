@@ -1,12 +1,18 @@
 package com.mijack.course.bean;
 
 /**
- * Created by admin on 2016/11/4.
+ * 用户的JavaBean
+ *
+ * @author Mr.Yuan
+ * @since 2016/11/4.
  */
 public class User {
     private String id;
     private String username;
     private String nickName;
+    /**0为买家
+     * 1为卖家
+     */
     private int usertype;
     private String password;
 
